@@ -1,0 +1,44 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+version: 2
+
+.docker-image: &docker-image
+  docker:
+    - image: circleci/golang:1.11.4-stretch
+
+.working-directory: &working-directory
+  working_directory: /go/src/github.com/cross-ts/gowiki
+
+jobs:
+  build:
+    <<: *docker-image
+    <<: *working-directory
+    steps:
+      - checkout
+      - run:
+          name: get packages
+          command: go get -v -t -d ./...
+      - run:
+          name: build
+          command: go build .
+  test:
+    <<: *docker-image
+    <<: *working-directory
+    steps:
+      - checkout
+      - run:
+          name: get packages
+          command: go get -v -t -d ./...
+      - run:
+          name: test
+          command: go test -v ./...
+
+workflows:
+  version: 2
+  test-require-build:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
