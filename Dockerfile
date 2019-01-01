@@ -9,5 +9,6 @@ FROM alpine:3.8
 WORKDIR /app
 COPY --from=build-env /build/server ./
 COPY tmpl/ ./tmpl
+RUN mkdir -p /app/data
 EXPOSE 8080
 ENTRYPOINT ["./server"]
