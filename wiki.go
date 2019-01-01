@@ -68,6 +68,10 @@ func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 	http.Redirect(w, r, "/view/"+title, http.StatusFound)
 }
 
+func rootHandler(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/view/FrontPage", http.StatusFound)
+}
+
 var templates = template.Must(template.ParseGlob("tmpl/*.html"))
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
@@ -78,6 +82,7 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 }
 
 func main() {
+	http.HandleFunc("/", rootHandler)
 	http.HandleFunc("/view/", makeHandler(viewHandler))
 	http.HandleFunc("/edit/", makeHandler(editHander))
 	http.HandleFunc("/save/", makeHandler(saveHandler))
