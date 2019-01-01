@@ -8,6 +8,6 @@ RUN go build -o server wiki.go
 FROM alpine:3.8
 WORKDIR /app
 COPY --from=build-env /build/server ./
-COPY templates/ ./templates
+COPY tmpl/ ./tmpl
 EXPOSE 8080
 ENTRYPOINT ["./server"]
